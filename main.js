@@ -1,4 +1,12 @@
 
+// TODO:
+// Add choices
+//  - Gui
+//
+//  - Scripting if statements
+//       or
+//  - Specific choice function that just loads a new script depending on choice (easier lol!)
+
 set_language("en")
 
 function animate()

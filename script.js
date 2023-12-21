@@ -93,6 +93,11 @@ var set_emote = function(emote)
 {
     current_dialouge.emote = emote;
 }
+var set_bg = function(bg)
+{
+    current_dialouge.bg = "image/background/" + bg;
+}
+
 var script_print = function (out)
 {
     console.log("[SCRIPT] " + out)
@@ -103,9 +108,18 @@ var wait_input = function()
     waiting_for_input = true;
 }
 
-var set_bg = function(bg)
+var choice = function(choices) // WIP
 {
-    current_dialouge.bg = "image/background/" + bg;
+
+}
+
+var script_goto = function(line)
+{
+    if (line >= current_instructions.length-1)
+    {
+        return;
+    }
+    current_instruction = line;
 }
 
 var safe_functions = {
@@ -117,7 +131,8 @@ var safe_functions = {
     "load_script": load_script,
     "play_sound": play_sound,
     "clear_dialouge": clear_dialouge,
-    "set_bg": set_bg
+    "set_bg": set_bg,
+    "goto": script_goto
 }
 function readInstruction(i)
 {
