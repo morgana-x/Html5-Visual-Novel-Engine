@@ -27,8 +27,20 @@ function get_sound(filePath)
     console.log("Loaded Sound " +  filePath);
     return snd
 }
+var lastSound = null;
 
-function play_sound(filePath)
+function play_sound(filePath, suppressLastSound=true)
 {
-    get_sound("sound/" + filePath).play();
+    stop_sound();
+    lastSound = get_sound("sound/" + filePath)
+    lastSound.play();
+}
+function stop_sound()
+{
+    if  (lastSound == null)
+    {
+        return;
+    }
+    lastSound.pause();
+    lastSound.currentTime = 0;
 }

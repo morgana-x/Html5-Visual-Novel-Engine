@@ -16,6 +16,7 @@ var scripts = {
             set_text("Welcome to Kawaii Fried Chicken!");
             play_sound("voice/0_welcome.wav");
             wait_input();
+            set_character(1);
             set_text("I like this!");
             print("test");
             wait_input();
@@ -29,6 +30,8 @@ var scripts = {
             load_script("test2");
             `,
     "test2" : `
+            clear_dialouge();
+            set_bg("kfc_bg.jpg");
             set_character(0);
             set_emote("smile");
             set_text("Welll");
@@ -47,6 +50,7 @@ var scripts = {
 var current_instructions = null;
 var current_instruction = 0;
 var waiting_for_input = false;
+
 function loadScript(txt)
 {
     current_instructions = txt.split(";");
@@ -55,10 +59,8 @@ function loadScript(txt)
 
 function load_script(id)
 {
-    //console.log(id)
     if (scripts[id])
     {
-        //console.log(scripts[id])
         loadScript(scripts[id])
     }
     else
@@ -80,11 +82,12 @@ var set_character = function(id)
     }
     current_speaker = get_character(id);
     current_dialouge.name = current_speaker.name
-    current_dialouge.bust = characters[id].bust
+    current_dialouge.bust = current_speaker.bust
 }
 var set_text = function(txt)
 {
     current_dialouge.text = txt;
+    stop_sound();
 }
 var set_emote = function(emote)
 {
