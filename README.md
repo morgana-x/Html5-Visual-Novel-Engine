@@ -2,6 +2,7 @@
 
 A bad personal visual novel framework
 
+View a demo here https://morgana-x.github.io/Html5-Visual-Novel-Engine/
 # Features
 - limited scripting system (Very unnessecary but it can pass text and use some limited 'safe functions' (Doesn't really check the strings for safety though, I hate javascript!)
 - that's about it!
