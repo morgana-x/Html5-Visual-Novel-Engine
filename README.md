@@ -60,4 +60,23 @@ set_text("This just loaded a completely different script!");
 wait_input();
 set_emote("laugh");
 set_text("Amazing ain't it!");
+choice("First Choice","test3","Goto start of script",0,"Goto middle of script",10);
+```
+test3
+```py
+clear_dialouge();
+set_bg("kfc_bg_2.jpg");
+set_character(0);
+set_emote("smile");
+set_text("woops a new place!");
+wait_input();
+set_character(1);
+set_emote("laugh");
+set_text("WOW!");
+wait_input();
+set_emote("smile2");
+set_text("Did we just select a choice!");
+wait_input();
+set_emote("laugh");
+set_text("Amazing ain't it!");
 ```
