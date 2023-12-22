@@ -36,7 +36,7 @@ function render_background(bg)
     ctx.drawImage(img, 0,0, canvas.width, canvas.height)
 }
 var lastText = "";
-var progress = 0;
+render_text_progress = 0;
 var word_speed = 0.15;
 
 function render_text_box(title, text, bust)
@@ -81,19 +81,19 @@ function render_text_box(title, text, bust)
     if (lastText != text)
     {
         lastText = text;
-        progress =0;
+        render_text_progress =0;
     }
 
 
-    if (progress > text.length)
+    if (render_text_progress > text.length)
     {
-        progress = text.length
+        render_text_progress = text.length
     }
-    else if (progress < text.length)
+    else if (render_text_progress < text.length)
     {
-        progress = progress + word_speed
+        render_text_progress = render_text_progress + word_speed
     }
-    var newText = text.substring(0, Math.ceil(progress))
+    var newText = text.substring(0, Math.ceil(render_text_progress))
 
     ctx.fillStyle = "white";
     ctx.font = fontSizeSmall+"px serif";

@@ -207,7 +207,12 @@ function preReadInstruction(i)
 
 function script_on_input()
 {
-    if (waiting_for_input)
+    if ( (current_dialouge.text != null ) && render_text_progress < current_dialouge.text.length)
+    {
+        render_text_progress = current_dialouge.text.length;
+        return true;
+    }
+    else if (waiting_for_input)
     {
         waiting_for_input = false;
         return true;
