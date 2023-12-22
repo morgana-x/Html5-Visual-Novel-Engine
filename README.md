@@ -7,6 +7,12 @@ View a demo here https://morgana-x.github.io/Html5-Visual-Novel-Engine/
 - limited custom scripting language (See example scripts below)
 - that's about it!
 
+# Controls (Temporary)
+- Confirm: Space / Enter / Mouse1
+- Scroll Up: W / Up Arrow / Mouse2
+- Scroll Down: S / Down Arrow
+- Pause Menu: Escape
+- Back / Return: Escape
 # Credit
 
 Used https://sutemo.itch.io/female-character for the bustups in the demo
