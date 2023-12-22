@@ -1,9 +1,8 @@
-current_dialouge = new Dialouge("Miss test", "Hi there", "image/character/kfc_worker_1", "image/background/kfc_bg.jpg")
+current_dialouge = new Dialouge(null, null, null, null)
 current_speaker = null
 
 var scripts = {
     "test" : `
-            print(26kl)
             set_character(-1);
             clear_dialouge();
             set_bg("kfc_bg_2.jpg");
@@ -136,18 +135,13 @@ var wait_input = function()
 
 var choice = function(...choices) // WIP
 {
-    console.log("Choice time!")
-    console.log(choices)
     current_choices = {};
     selected_choice = 0;
     waiting_for_choice = true;
     for (let i=2; i <choices.length+2; i+=2)
     {
-        console.log(i);
         var destination = choices[i-2]
         var text = choices[i-1]
-        console.log("Dest: " + destination);
-        console.log("Text: " + text);
         current_choices[text] = destination;
     }
 }
@@ -235,10 +229,9 @@ function isNumeric(str) {
 
 function on_select_choice()
 {
-    console.log("Selected choice!")
     waiting_for_choice = false;
     var key = Object.keys(current_choices)[selected_choice]
-    var result = key; //current_choices[key];
+    var result = key; 
     current_choices = {};
     current_choice = 0;
     if (isNumeric(result))

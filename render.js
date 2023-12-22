@@ -87,9 +87,7 @@ function render_text_box(title, text, bust)
     {
         progress = progress + word_speed
     }
-    //console.log(progress)
     var newText = text.substring(0, Math.ceil(progress))
-    //console.log(newText)
 
     ctx.fillStyle = "white";
     ctx.font = fontSizeSmall+"px serif";
@@ -98,7 +96,6 @@ function render_text_box(title, text, bust)
 
 function render_choices(choices)
 {
-    console.log("Rendering choices!")
     var x = centerx + textBoxWidth/2;
     var y = canvas.height - textBoxHeight;
     choiceKeys = Object.keys(current_choices);
@@ -119,5 +116,29 @@ function render_tick()
 {
     context.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
     window.requestAnimationFrame(animate);
-    //render_text_box("Test Name", "Hello world 2", "image/character/kfc_worker_1/normal.png")
+
+    if (current_dialouge != null)
+    {
+        if (current_dialouge.bg != null)
+        {
+            render_background(current_dialouge.bg)
+        }
+        if (current_dialouge.bust)
+        {
+        render_text_box(current_dialouge.name, current_dialouge.text, current_dialouge.bust + "/" + current_dialouge.emote + ".png")
+        }
+        else
+        {
+            render_text_box(current_dialouge.name, current_dialouge.text,null)
+        }
+   
+    }
+    else
+    {
+        render_background("image/background/kfc_bg.jpg")
+    }
+    if (current_choices != null && Object.keys(current_choices).length > 0)
+    {
+        render_choices(current_choices);
+    }
 }
