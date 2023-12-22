@@ -2,6 +2,7 @@ scripts["test"] = `
 set_character(-1);
 clear_dialouge();
 set_bg("kfc_bg_2.jpg");
+set_text("I should enter this KFC...");
 wait_input();
 set_bg("kfc_bg.jpg");
 set_character(0);

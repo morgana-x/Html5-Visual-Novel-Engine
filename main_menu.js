@@ -1,0 +1,72 @@
+var selected_button = 0;
+
+var options = {
+    "New Game" : function()
+    {
+        main_menu_newgame();
+    },
+    "Load Game": function()
+    {
+        main_menu_loadgame();
+    },
+    "Options" : function()
+    {
+
+    }
+}
+
+function tick_mainmenu()
+{
+    render_mainmenu(selected_button,options);
+}
+
+function open_mainmenu()
+{
+    scene = 0;
+}
+
+function main_menu_loadgame()
+{
+    console.log("Loading game!");
+    open_saveslot_menu(false);
+}
+function main_menu_newgame()
+{
+    console.log("Starting new game!");
+    open_saveslot_menu(false, true);
+}
+
+function main_menu_input_down()
+{
+    if (scene != 0 || selecting_saveslot)
+    {
+        return;
+    }
+    selected_button--
+    if (selected_button < 0)
+    {
+        selected_button = Object.keys(options).length-1
+    }
+}
+
+function main_menu_input_up()
+{
+    if (scene != 0 || selecting_saveslot)
+    {
+        return;
+    }
+    selected_button++;
+    if (selected_button >= Object.keys(options).length)
+    {
+        selected_button = 0
+    }
+}
+function main_menu_input_select()
+{
+    if (scene != 0 || selecting_saveslot)
+    {
+        return;
+    }
+    options[Object.keys(options)[selected_button]]();
+    return true;
+}

@@ -4,16 +4,17 @@ current_speaker = null
 var scripts = {}
 
 var current_instructions = null;
-var current_instruction = 0;
+current_instruction = 0;
 var waiting_for_input = false;
 var waiting_for_choice = false;
 current_choices = {};
 selected_choice = 0;
-
+current_script_id = null;
 function loadScript(txt)
 {
     current_instructions = txt.split(";");
     current_instruction = 0;
+    scene = 1 // set scene to visual novel type (Exit main menu etc)
 }
 
 function load_script(id)
@@ -21,6 +22,7 @@ function load_script(id)
     if (scripts[id])
     {
         loadScript(scripts[id])
+        current_script_id = id;
     }
     else
     {
@@ -202,7 +204,11 @@ function preReadInstruction(i)
 
 function script_on_input()
 {
-    waiting_for_input = false;
+    if (waiting_for_input)
+    {
+        waiting_for_input = false;
+        return true;
+    }
 }
 function isNumeric(str) {
     if (typeof str != "string") return false // we only process strings!  
@@ -241,6 +247,7 @@ function script_tick()
     {
         current_instructions = null;
         current_instruction = 0;
+        current_script_id = null;
         return;
     }
     readInstruction(current_instructions[current_instruction]);

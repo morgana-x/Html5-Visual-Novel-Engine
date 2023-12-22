@@ -1,15 +1,37 @@
 // todo: Cleanup this and make it more modular to allow for controller support etc or something lol
 function on_click()
 {
-    script_on_input();
+    if (saveload_input_select())
+    {
+        return;
+    }
+    if (main_menu_input_select())
+    {
+        return;
+    }
     if (current_choices != null && Object.keys(current_choices).length  > 0)
     {
         on_select_choice();
+        return;
+    }
+    if (script_on_input())
+    {
+        return;
     }
 }
 function on_right_click(event)
 {
     event.preventDefault();
+    if (selecting_saveslot)
+    {
+        selected_save_slot++;
+        if (selected_save_slot >= 16 )
+        {
+            selected_save_slot = 0;
+        }
+        return false;
+    }
+    main_menu_input_up();
     if (current_choices != null && Object.keys(current_choices).length  > 0)
     {
         selected_choice++;
@@ -22,12 +44,20 @@ function on_right_click(event)
 }
 function on_key_press(event)
 {
-    if (event.keyCode == 32 || event.keyCode == 13)
+
+    if (event.keyCode == 9) // tab
+    {
+        open_saveslot_menu(save = true);
+    }
+    if (event.keyCode == 32 || event.keyCode == 13) // space / enter
     {
         on_click();
     }
     if (event.keyCode == 38) // up arrow
     {
+        
+        saveload_input_up();
+        main_menu_input_up();
         if (current_choices != null && Object.keys(current_choices).length  > 0)
         {
             selected_choice++;
@@ -39,6 +69,9 @@ function on_key_press(event)
     }
     if (event.keyCode == 40) // downarrow
     {
+        
+        saveload_input_down();
+        main_menu_input_down();
         if (current_choices != null && Object.keys(current_choices).length  > 0)
         {
             selected_choice--;

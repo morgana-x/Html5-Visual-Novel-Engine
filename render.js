@@ -53,10 +53,8 @@ function render_text_box(title, text, bust)
         ctx.drawImage(img, centerx - (imgWidth/2), textboxY - imgHeight - (textBoxHeight/2), imgWidth,imgHeight);
     }
 
-    if (title == null || text == null)
-    {
-        return;
-    }
+   
+        
 
     var textBoxX = 0 //centerx - textBoxWidth/2
 
@@ -67,12 +65,19 @@ function render_text_box(title, text, bust)
     ctx.font = fontSizeMedium+"px serif";
 
     ctx.textAlign = "start";
-    var nameSize = ctx.measureText(title)
-    ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
-    ctx.fillRect(textBoxX, textboxY - (textBoxHeight/2) - (fontSizeMedium*1.2), nameSize.width * 1.2, fontSizeMedium * 1.2)
-    ctx.fillStyle = "white";
-    ctx.fillText(title, textBoxX + 10, textboxY  - (textBoxHeight /2) - ((fontSizeMedium)/2/2) );
 
+    if (title != null)
+    {
+        var nameSize = ctx.measureText(title)
+        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillRect(textBoxX, textboxY - (textBoxHeight/2) - (fontSizeMedium*1.2), nameSize.width * 1.2, fontSizeMedium * 1.2)
+        ctx.fillStyle = "white";
+        ctx.fillText(title, textBoxX + 10, textboxY  - (textBoxHeight /2) - ((fontSizeMedium)/2/2) );
+    }
+    if (text == null)
+    {
+        return;
+    }
     if (lastText != text)
     {
         lastText = text;
@@ -94,7 +99,27 @@ function render_text_box(title, text, bust)
     ctx.font = fontSizeSmall+"px serif";
     ctx.fillText(newText, textBoxX + 10, textboxY - (textBoxHeight/2) + fontSizeSmall);
 }
+function render_mainmenu(selected_button, options)
+{
+    var x = centerx; //+ textBoxWidth/2;
+    var y = centery;
+    render_background("image/background/kfc_bg.jpg");
 
+    var optionskeys = Object.keys(options)
+    for (let i =0; i< optionskeys.length;i++)
+    {
+        var title = optionskeys[i] //options[optionskeys[i]]
+        ctx.font = fontSizeLarge+"px serif";
+        var choiceSize = ctx.measureText(title)
+        ctx.textAlign = "center";
+        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge);
+        ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
+        ctx.fillStyle = (selected_button == i) ? "white" : "black";
+        ctx.fillText(title, x, y - (i*fontSizeLarge));
+    }
+
+}
 function render_choices(choices)
 {
     var x = centerx + textBoxWidth/2;
@@ -112,6 +137,32 @@ function render_choices(choices)
         ctx.fillRect(x - choiceSize.width - 10, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
         ctx.fillStyle = (selected_choice == i) ? "white" : "black";
         ctx.fillText(title, x-10, y - (i*fontSizeLarge));
+    }
+}
+
+function render_saveslots()
+{
+    var x = centerx
+    var y = centery + ( (16*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2)/2;
+    var saveSlots = getSaveSlots();
+
+    for (let i =0; i < saveSlots.length; i++)
+    {
+
+        var data = saveSlots[i]
+        //console.log(data)
+        var title = "Slot " + i;
+        var text = (data["date"] != null) ? data["date"] : "NO DATA";
+        ctx.font = fontSizeSmall+"px serif";
+        var choiceSize = ctx.measureText(text)
+        ctx.textAlign = "left";
+        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillRect(x ,  y - (i*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2, choiceSize.width + 10, fontSizeSmall*2);
+
+        ctx.fillStyle = (selected_save_slot == i) ? "white" : "black";
+        ctx.fillText(title, x, y - (i*fontSizeSmall * 2) - fontSizeSmall/2);
+
+        ctx.fillText(text, x, y - (i*fontSizeSmall * 2) + fontSizeSmall/2);
     }
 }
 function render_tick()
