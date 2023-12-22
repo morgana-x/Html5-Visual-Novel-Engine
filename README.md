@@ -9,8 +9,8 @@ View a demo here https://morgana-x.github.io/Html5-Visual-Novel-Engine/
 
 # Controls (Temporary)
 - Confirm: Space / Enter / Mouse1
-- Scroll Up: W / Up Arrow / Mouse2
-- Scroll Down: S / Down Arrow
+- Scroll Up: W / Up Arrow / Mouse2 / mousewheel up
+- Scroll Down: S / Down Arrow / mousewheel down
 - Pause Menu: Escape
 - Back / Return: Escape
 # Credit
