@@ -9,6 +9,10 @@ function on_click()
     {
         return;
     }
+    if (pause_menu_input_select())
+    {
+        return;
+    }
     if (current_choices != null && Object.keys(current_choices).length  > 0)
     {
         on_select_choice();
@@ -21,14 +25,28 @@ function on_click()
 }
 function input_up()
 {
-    saveload_input_up();
+    if (saveload_input_up())
+    {
+        return;
+    }
     main_menu_input_up();
+    if (pause_menu_input_up())
+    {
+        return;
+    }
     choice_input_up();
 }
 function input_down()
 {
-    saveload_input_down();
+    if (saveload_input_down())
+    {
+        return;
+    }
     main_menu_input_down();
+    if (pause_menu_input_down())
+    {
+        return;
+    }
     choice_input_down();
 }
 function on_right_click(event)
@@ -43,30 +61,37 @@ function on_back()
     {
         return;
     }
+    if (pause_menu_active)
+    {
+        pause_menu_back();
+    }
+    else if (scene == 1)
+    {
+        open_pause_menu();
+    }
+    
+    
 }
 function on_key_press(event)
 {
 
     if (event.keyCode == 192) // ~ //9) tab
     {
-        if (scene == 1)
-        {
-            open_saveslot_menu(save = true);
-        }
+     
     }
     if (event.keyCode == 32 || event.keyCode == 13) // space / enter
     {
         on_click();
     }
-    if (event.keyCode == 27) // esc
+    if (event.keyCode == 27 || event.keyCode == 67) // esc, c key
     {
         on_back();
     }
-    if (event.keyCode == 38) // up arrow
+    if (event.keyCode == 38 || event.keyCode == 87) // up arrow, w key
     {   
         input_up()
     }
-    if (event.keyCode == 40) // downarrow
+    if (event.keyCode == 40 || event.keyCode == 83) // downarrow,  s key
     {
         input_down();
     }

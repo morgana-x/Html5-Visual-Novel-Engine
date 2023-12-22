@@ -41,6 +41,12 @@ function saveProgress(slot)
 }
 function createNewSave(slot)
 {
+    var slots = getSaveSlots()
+    var saveData = slots[slot];
+    if (saveData.scriptId != null) // TODO: if save data already there, warn user about it and ask to override
+    {
+
+    }
     var saveContent = {
         "scriptId": "test",
         "instruction": 0,
@@ -56,12 +62,14 @@ function loadProgress(slot)
     if (saveData.scriptId == null)
     {
         console.log("Error! Save slot " + slot + " has no data!");
-        createNewSave(slot);
-        loadProgress(slot);
+        alert("No save data in slot!");
+        //createNewSave(slot);
+        //loadProgress(slot);
         return;
     }
 
     //var instruction = 0;//(saveData.instruction != null) ? saveData.instruction : 0;
+    pause_menu_active = false;
     load_script(saveData.scriptId);
    // current_instruction = instruction;
 }
@@ -105,7 +113,7 @@ function saveload_input_down()
         {
             selected_save_slot = 15;
         }
-        return;
+        return true;
     }
 }
 function saveload_input_up()
@@ -117,7 +125,7 @@ function saveload_input_up()
         {
             selected_save_slot = 0;
         }
-        return;
+        return true;
     }
 }
 function saveload_back()

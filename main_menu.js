@@ -18,11 +18,15 @@ var options = {
 
 function tick_mainmenu()
 {
+    render_background("image/background/kfc_bg.jpg");
     render_mainmenu(selected_button,options);
 }
 
 function open_mainmenu()
 {
+    script_clear();
+    stop_music();
+    stop_sound();
     scene = 0;
 }
 

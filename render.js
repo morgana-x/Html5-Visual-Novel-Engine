@@ -102,10 +102,28 @@ function render_text_box(title, text, bust)
 function render_mainmenu(selected_button, options)
 {
     var x = centerx; //+ textBoxWidth/2;
-  
-    render_background("image/background/kfc_bg.jpg");
     var fontSizeLarge = (50*(canvas.width/1280));
     var optionskeys = Object.keys(options)
+    var y = centery + (optionskeys.length*fontSizeLarge)/2 ;
+    for (let i =0; i< optionskeys.length;i++)
+    {
+        var title = optionskeys[i] //options[optionskeys[i]]
+        ctx.font = fontSizeLarge+"px serif";
+        var choiceSize = ctx.measureText(title)
+        ctx.textAlign = "center";
+        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge);
+        ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
+        ctx.fillStyle = (selected_button == i) ? "white" : "black";
+        ctx.fillText(title, x, y - (i*fontSizeLarge));
+    }
+
+}
+function render_pausemenu(selected_button, pauseoptions)
+{
+    var x = centerx; //+ textBoxWidth/2;
+    var fontSizeLarge = (50*(canvas.width/1280));
+    var optionskeys = Object.keys(pauseoptions)
     var y = centery + (optionskeys.length*fontSizeLarge)/2 ;
     for (let i =0; i< optionskeys.length;i++)
     {
@@ -143,9 +161,9 @@ function render_choices(choices)
 
 function render_saveslots()
 {
-    var fontSizeSmall = (17*(canvas.width/1280));
+    var fontSizeSmall = (20*(canvas.height/1280));
     var x = centerx
-    var y = centery + ( (16*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2)/2;
+    var y = centery + ( (16*fontSizeSmall * 3) - fontSizeSmall*3 + fontSizeSmall/3)/2;
     var saveSlots = getSaveSlots();
 
     for (let i =0; i < saveSlots.length; i++)
@@ -154,21 +172,30 @@ function render_saveslots()
         var data = saveSlots[i]
         //console.log(data)
         var title = "Slot " + i;
-        var text = (data["date"] != null) ? data["date"] : "NO DATA";
-        ctx.font = fontSizeSmall+"px serif";
+        var text = (data["scriptId"] != null) ? data["scriptId"] : "NO DATA"
+        var textDate = "";
+        if (text != "NO DATA")
+        {
+            textDate = "Date: " + ((data["date"] != null) ? data["date"] : "???");
+        }
+
+        ctx.font = "bold " + fontSizeSmall+"px serif";
         var choiceSize = {width: canvas.width}//ctx.measureText(text)
         ctx.textAlign = "center";
         ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
-        ctx.fillRect(x - choiceSize.width/2 ,  y - (i*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2, choiceSize.width + 10, fontSizeSmall*2);
-
+        var slotY = y - (i*fontSizeSmall * 3) - fontSizeSmall*i*0.5
+        ctx.fillRect(x - choiceSize.width/2 ,  slotY, choiceSize.width, fontSizeSmall*3.5);
+        slotY += fontSizeSmall*3.5/2 + (fontSizeSmall/2)
         ctx.fillStyle = (selected_save_slot == i) ? "white" : "black";
-        ctx.fillText(title, x, y - (i*fontSizeSmall * 2) - fontSizeSmall/2);
+        ctx.fillText(title, x, slotY- fontSizeSmall);
+        ctx.font = fontSizeSmall+"px serif";
+        ctx.fillText(text, x, slotY);
 
-        ctx.fillText(text, x, y - (i*fontSizeSmall * 2) + fontSizeSmall/2);
+        ctx.fillText(textDate, x,  slotY + fontSizeSmall);
     }
-    ctx.font = fontSizeLarge+"px serif";
+    ctx.font = fontSizeSmall*2+"px serif";
     ctx.fillStyle = 'black'
-    ctx.fillText("Select a slot!",x, y- ( (16*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2) - fontSizeLarge)
+    ctx.fillText("Select a slot!",x, y- (16*fontSizeSmall * 3) - fontSizeSmall*3 + fontSizeSmall/3 - fontSizeSmall*2)
 }
 function render_tick()
 {

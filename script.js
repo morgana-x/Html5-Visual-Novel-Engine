@@ -12,6 +12,7 @@ selected_choice = 0;
 current_script_id = null;
 function loadScript(txt)
 {
+    script_clear();
     current_instructions = txt.split(";");
     current_instruction = 0;
     scene = 1 // set scene to visual novel type (Exit main menu etc)
@@ -240,7 +241,14 @@ function on_select_choice()
         load_script(result);
     }
 }
-
+function script_clear()
+{
+    current_instructions = null;
+    current_instruction = 0;
+    current_script_id = null;
+    waiting_for_input = false;
+    waiting_for_choice = false;
+}
 function script_tick()
 {
     if (current_instructions == null)
@@ -253,9 +261,7 @@ function script_tick()
     }
     if (current_instruction >= current_instructions.length-1)
     {
-        current_instructions = null;
-        current_instruction = 0;
-        current_script_id = null;
+        script_clear()
         return;
     }
     readInstruction(current_instructions[current_instruction]);
