@@ -155,6 +155,51 @@ function readInstruction(i)
     }
 }
 
+function preReadInstruction(i)
+{
+    var argIndex = i.indexOf("(",0)
+    var funcName = i.substring(1, argIndex);
+
+    var rawargs = i.substring(argIndex, i.length).replace("(", "").replace(")","").split(",");
+    var args = []
+    rawargs.forEach(a => {
+        args.push(toVariable(a));
+    });
+
+
+
+    funcName = funcName.trim();
+    if (funcName == "set_emote")
+    {
+        if (current_dialouge.bust)
+        {
+            getImage(current_dialouge.bust + "/" + args[0] + ".png"); // preload
+        }
+    }
+    if (funcName == "set_bg")
+    {
+        if (args[0])
+        {
+            getImage("image/background/" + args[0]);
+        }
+    }
+    if (funcName == "set_character")
+    {
+        if (args[0] == -1)
+        {
+            return;
+        }
+        if (current_dialouge.emote == null)
+        {
+            return;
+        }
+        char = get_character(args[0]);
+        var bust = char.bust;
+        getImage(bust + "/" + current_dialouge.emote + ".png"); // preload
+
+    }
+}
+
 function script_on_input()
 {
     waiting_for_input = false;
@@ -199,6 +244,10 @@ function script_tick()
         return;
     }
     readInstruction(current_instructions[current_instruction]);
+    if (current_instruction < current_instructions.length-2)
+    {
+        preReadInstruction(current_instructions[current_instruction+1]);
+    }
     current_instruction = current_instruction + 1;
 }
 
