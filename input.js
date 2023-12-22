@@ -19,27 +19,22 @@ function on_click()
         return;
     }
 }
+function input_up()
+{
+    saveload_input_up();
+    main_menu_input_up();
+    choice_input_up();
+}
+function input_down()
+{
+    saveload_input_down();
+    main_menu_input_down();
+    choice_input_down();
+}
 function on_right_click(event)
 {
     event.preventDefault();
-    if (selecting_saveslot)
-    {
-        selected_save_slot++;
-        if (selected_save_slot >= 16 )
-        {
-            selected_save_slot = 0;
-        }
-        return false;
-    }
-    main_menu_input_up();
-    if (current_choices != null && Object.keys(current_choices).length  > 0)
-    {
-        selected_choice++;
-        if (selected_choice >= Object.keys(current_choices).length )
-        {
-            selected_choice = 0;
-        }
-    }
+    input_up();
     return false;
 }
 function on_back()
@@ -63,37 +58,17 @@ function on_key_press(event)
     {
         on_click();
     }
-    if (event.keyCode == 27)
+    if (event.keyCode == 27) // esc
     {
         on_back();
     }
     if (event.keyCode == 38) // up arrow
-    {
-        
-        saveload_input_up();
-        main_menu_input_up();
-        if (current_choices != null && Object.keys(current_choices).length  > 0)
-        {
-            selected_choice++;
-            if (selected_choice >= Object.keys(current_choices).length )
-            {
-                selected_choice = 0;
-            }
-        }
+    {   
+        input_up()
     }
     if (event.keyCode == 40) // downarrow
     {
-        
-        saveload_input_down();
-        main_menu_input_down();
-        if (current_choices != null && Object.keys(current_choices).length  > 0)
-        {
-            selected_choice--;
-            if (selected_choice < 0 )
-            {
-                selected_choice = Object.keys(current_choices).length-1;
-            }
-        }
+        input_down();
     }
 }
 window.addEventListener("click", on_click);

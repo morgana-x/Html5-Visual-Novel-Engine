@@ -261,3 +261,25 @@ function script_tick()
     current_instruction = current_instruction + 1;
 }
 
+function choice_input_up()
+{
+    if (current_choices != null && Object.keys(current_choices).length  > 0)
+    {
+        selected_choice++;
+        if (selected_choice >= Object.keys(current_choices).length )
+        {
+            selected_choice = 0;
+        }
+    }
+}
+function choice_input_down()
+{
+    if (current_choices != null && Object.keys(current_choices).length  > 0)
+    {
+        selected_choice--;
+        if (selected_choice < 0 )
+        {
+            selected_choice = Object.keys(current_choices).length-1;
+        }
+    }
+}
