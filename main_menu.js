@@ -28,6 +28,7 @@ function open_mainmenu()
     stop_music();
     stop_sound();
     scene = 0;
+    play_music("clairdelune.mp3");
 }
 
 function main_menu_loadgame()
