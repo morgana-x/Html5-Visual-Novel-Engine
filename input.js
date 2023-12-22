@@ -23,6 +23,7 @@ function on_click()
         return;
     }
 }
+
 function input_up()
 {
     if (saveload_input_up())
@@ -96,6 +97,18 @@ function on_key_press(event)
         input_down();
     }
 }
+function on_scroll(event)
+{
+    if (event.deltaY < 0)
+    {
+        input_up();
+    }
+    else if (event.deltaY > 0)
+    {
+        input_down();
+    }
+}
 window.addEventListener("click", on_click);
 window.addEventListener('contextmenu', on_right_click);
 window.addEventListener('keydown', on_key_press);
+document.addEventListener("wheel", on_scroll)
