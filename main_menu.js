@@ -1,18 +1,19 @@
-var selected_button = 0;
-
+var selected_button = 2;
+var interactedWithDocument = false;
 var options = {
-    "New Game" : function()
+
+    "Options" : function()
     {
-        main_menu_newgame();
+
     },
     "Load Game": function()
     {
         main_menu_loadgame();
     },
-    "Options" : function()
+    "New Game" : function()
     {
-
-    }
+        main_menu_newgame();
+    },
 }
 
 function tick_mainmenu()
@@ -47,6 +48,11 @@ function main_menu_input_down()
     {
         selected_button = Object.keys(options).length-1
     }
+    if (interactedWithDocument == false)
+    {
+        play_music("clairdelune.mp3");
+        interactedWithDocument = true;
+    }
 }
 
 function main_menu_input_up()
@@ -60,12 +66,22 @@ function main_menu_input_up()
     {
         selected_button = 0
     }
+    if (interactedWithDocument == false)
+    {
+        play_music("clairdelune.mp3");
+        interactedWithDocument = true;
+    }
 }
 function main_menu_input_select()
 {
     if (scene != 0 || selecting_saveslot)
     {
         return;
+    }
+    if (interactedWithDocument == false)
+    {
+        play_music("clairdelune.mp3");
+        interactedWithDocument = true;
     }
     options[Object.keys(options)[selected_button]]();
     return true;

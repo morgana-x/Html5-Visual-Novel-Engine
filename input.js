@@ -42,16 +42,30 @@ function on_right_click(event)
     }
     return false;
 }
+function on_back()
+{
+    if (saveload_back())
+    {
+        return;
+    }
+}
 function on_key_press(event)
 {
 
-    if (event.keyCode == 9) // tab
+    if (event.keyCode == 192) // ~ //9) tab
     {
-        open_saveslot_menu(save = true);
+        if (scene == 1)
+        {
+            open_saveslot_menu(save = true);
+        }
     }
     if (event.keyCode == 32 || event.keyCode == 13) // space / enter
     {
         on_click();
+    }
+    if (event.keyCode == 27)
+    {
+        on_back();
     }
     if (event.keyCode == 38) // up arrow
     {

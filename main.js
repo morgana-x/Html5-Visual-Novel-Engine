@@ -25,7 +25,6 @@ animate();
 
 set_language("en");
 
-//load_script("test");
 open_mainmenu();
 
 

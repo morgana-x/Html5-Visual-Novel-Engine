@@ -120,6 +120,14 @@ function saveload_input_up()
         return;
     }
 }
+function saveload_back()
+{
+    if (selecting_saveslot)
+    {
+        selecting_saveslot = false;
+        return true;
+    }
+}
 function saveload_input_select()
 {
     if (selecting_saveslot)
@@ -131,10 +139,14 @@ function saveload_input_select()
         }
         else if (selecting_saveslot_load)
         {
-            loadProgress(selected_save_slot)
+            stop_music();
+            stop_sound();
+            loadProgress(selected_save_slot);
         }
         else if (selecting_saveslot_newgame)
         {
+            stop_music();
+            stop_sound();
             createNewSave(selected_save_slot);
             loadProgress(selected_save_slot);
             saveProgress(selected_save_slot);

@@ -102,10 +102,11 @@ function render_text_box(title, text, bust)
 function render_mainmenu(selected_button, options)
 {
     var x = centerx; //+ textBoxWidth/2;
-    var y = centery;
+  
     render_background("image/background/kfc_bg.jpg");
-
+    var fontSizeLarge = (50*(canvas.width/1280));
     var optionskeys = Object.keys(options)
+    var y = centery + (optionskeys.length*fontSizeLarge)/2 ;
     for (let i =0; i< optionskeys.length;i++)
     {
         var title = optionskeys[i] //options[optionskeys[i]]
@@ -142,6 +143,7 @@ function render_choices(choices)
 
 function render_saveslots()
 {
+    var fontSizeSmall = (17*(canvas.width/1280));
     var x = centerx
     var y = centery + ( (16*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2)/2;
     var saveSlots = getSaveSlots();
@@ -154,16 +156,19 @@ function render_saveslots()
         var title = "Slot " + i;
         var text = (data["date"] != null) ? data["date"] : "NO DATA";
         ctx.font = fontSizeSmall+"px serif";
-        var choiceSize = ctx.measureText(text)
-        ctx.textAlign = "left";
+        var choiceSize = {width: canvas.width}//ctx.measureText(text)
+        ctx.textAlign = "center";
         ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
-        ctx.fillRect(x ,  y - (i*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2, choiceSize.width + 10, fontSizeSmall*2);
+        ctx.fillRect(x - choiceSize.width/2 ,  y - (i*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2, choiceSize.width + 10, fontSizeSmall*2);
 
         ctx.fillStyle = (selected_save_slot == i) ? "white" : "black";
         ctx.fillText(title, x, y - (i*fontSizeSmall * 2) - fontSizeSmall/2);
 
         ctx.fillText(text, x, y - (i*fontSizeSmall * 2) + fontSizeSmall/2);
     }
+    ctx.font = fontSizeLarge+"px serif";
+    ctx.fillStyle = 'black'
+    ctx.fillText("Select a slot!",x, y- ( (16*fontSizeSmall * 2) - fontSizeSmall*2 + fontSizeSmall/2) - fontSizeLarge)
 }
 function render_tick()
 {
