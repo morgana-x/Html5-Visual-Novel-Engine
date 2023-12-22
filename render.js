@@ -125,7 +125,7 @@ function render_tick()
         }
         if (current_dialouge.bust)
         {
-        render_text_box(current_dialouge.name, current_dialouge.text, current_dialouge.bust + "/" + current_dialouge.emote + ".png")
+            render_text_box(current_dialouge.name, current_dialouge.text, current_dialouge.bust + "/" + current_dialouge.emote + ".png")
         }
         else
         {

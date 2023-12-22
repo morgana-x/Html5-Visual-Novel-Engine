@@ -6,7 +6,7 @@ function animate()
 animate();
 
 
-set_language("en")
+set_language("en");
 
 load_script("test");
 
