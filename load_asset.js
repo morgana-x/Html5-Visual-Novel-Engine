@@ -2,7 +2,7 @@ asset_images = {}
 asset_sounds = {}
 function get_image(filePath)
 {
-    if (asset_images[filePath])
+    if (asset_images[filePath] != null)
     {
         return asset_images[filePath]
     }
@@ -17,7 +17,7 @@ function get_image(filePath)
 getImage = get_image;
 function get_sound(filePath)
 {
-    if (asset_sounds[filePath])
+    if (asset_sounds[filePath]!= null)
     {
         return asset_sounds[filePath]
     }

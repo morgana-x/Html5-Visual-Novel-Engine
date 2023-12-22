@@ -7,6 +7,7 @@ canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 var centerx = canvas.width/2;
 var centery = canvas.height/2;
+var fontSizeLarge = (40*(canvas.width/1280));
 var fontSizeMedium = (27*(canvas.width/1280));
 var fontSizeSmall = (24*(canvas.width/1280));
 var textBoxWidth = canvas.width / 1.5;
@@ -23,7 +24,7 @@ function updateSize()
     fontSizeMedium = (32*(canvas.width/1280));
     fontSizeSmall = (24*(canvas.width/1280));
 
-    textBoxWidth = canvas.width / 1.2;
+    textBoxWidth = canvas.width / 1;
     textBoxHeight = canvas.height / 8;
 }
 window.addEventListener("resize", updateSize)
@@ -40,37 +41,37 @@ var word_speed = 0.15;
 
 function render_text_box(title, text, bust)
 {
-    var textboxY = canvas.height - textBoxHeight
+    var textboxY = canvas.height - (textBoxHeight/2 )
     if (bust != null)
     {
         var img = getImage(bust)
-        var imgWidth = textBoxWidth / 1.5 //img.width * ((canvas.width / img.width))/2;
+        var imgWidth = canvas.height //img.width * ((canvas.width / img.width))/2;
         var imgHeight = imgWidth;
         
 
-
-        ctx.drawImage(img, centerx - (imgWidth/2), textboxY - (imgHeight), imgWidth,imgHeight);
+        //console.log(textboxY)
+        ctx.drawImage(img, centerx - (imgWidth/2), textboxY - imgHeight - (textBoxHeight/2), imgWidth,imgHeight);
     }
 
     if (title == null || text == null)
     {
         return;
     }
-   
-    textboxY = canvas.height - textBoxHeight + fontSizeMedium
-    
 
-    ctx.fillStyle = "pink";
-    ctx.fillRect(centerx - textBoxWidth/2, textboxY - textBoxHeight/2, textBoxWidth, textBoxHeight)
+    var textBoxX = 0 //centerx - textBoxWidth/2
+
+    ctx.fillStyle = 'rgba(' + '173, 91, 245, 0.7' + ')' //"pink";
+    ctx.fillRect(textBoxX, textboxY - textBoxHeight/2, textBoxWidth, textBoxHeight)
 
 
     ctx.font = fontSizeMedium+"px serif";
 
     ctx.textAlign = "start";
     var nameSize = ctx.measureText(title)
-    ctx.fillRect(centerx - textBoxWidth/2, textboxY - (textBoxHeight/2) - fontSizeMedium, nameSize.width, fontSizeMedium)
+    ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+    ctx.fillRect(textBoxX, textboxY - (textBoxHeight/2) - (fontSizeMedium*1.2), nameSize.width * 1.2, fontSizeMedium * 1.2)
     ctx.fillStyle = "white";
-    ctx.fillText(title, centerx - textBoxWidth/2, textboxY  - (textBoxHeight /2) );
+    ctx.fillText(title, textBoxX + 10, textboxY  - (textBoxHeight /2) - ((fontSizeMedium)/2/2) );
 
     if (lastText != text)
     {
@@ -91,7 +92,7 @@ function render_text_box(title, text, bust)
 
     ctx.fillStyle = "white";
     ctx.font = fontSizeSmall+"px serif";
-    ctx.fillText(newText, centerx - textBoxWidth/2, textboxY - (textBoxHeight/2) + fontSizeSmall);
+    ctx.fillText(newText, textBoxX + 10, textboxY - (textBoxHeight/2) + fontSizeSmall);
 }
 
 function render_choices(choices)
@@ -103,13 +104,14 @@ function render_choices(choices)
     {
 
         var title = choices[choiceKeys[i]]
-        ctx.font = fontSizeSmall+"px serif";
+        ctx.font = fontSizeLarge+"px serif";
         var choiceSize = ctx.measureText(title)
         ctx.textAlign = "right";
-        ctx.fillStyle = "magenta";
-        ctx.fillRect(x - choiceSize.width, y - ((i*fontSizeSmall) + fontSizeSmall), choiceSize.width, fontSizeSmall);
+        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillRect(x - choiceSize.width - 10, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge);
+        ctx.fillRect(x - choiceSize.width - 10, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
         ctx.fillStyle = (selected_choice == i) ? "white" : "black";
-        ctx.fillText(title, x, y - (i*fontSizeSmall));
+        ctx.fillText(title, x-10, y - (i*fontSizeLarge));
     }
 }
 function render_tick()

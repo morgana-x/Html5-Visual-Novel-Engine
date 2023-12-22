@@ -12,7 +12,7 @@ class Character
 }
 
 character_test = new Character(
-    new Translation("Dummy2", "ダミー２"),
+    new Translation("KFC Worker", "KFCの職員"),
     "image/character/kfc_worker_1"
 );
 character_test_2 = new Character(

@@ -27,7 +27,6 @@ load_script("test2");
 `;
 
 scripts["test2"] = `
-clear_dialouge();
 set_bg("kfc_bg.jpg");
 set_character(0);
 set_emote("smile");
@@ -45,7 +44,6 @@ choice("First Choice","test3","Goto start of script",0,"Goto middle of script",1
 `;
 
 scripts["test3"] = `
-clear_dialouge();
 set_bg("kfc_bg_2.jpg");
 set_character(0);
 set_emote("smile");
