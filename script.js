@@ -248,6 +248,8 @@ function script_clear()
     current_script_id = null;
     waiting_for_input = false;
     waiting_for_choice = false;
+    current_choices = {};
+    
 }
 function script_tick()
 {

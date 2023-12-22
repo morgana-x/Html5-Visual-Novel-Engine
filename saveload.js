@@ -17,25 +17,30 @@ function createSaveSlots()
 
 
 }
+var save_slots = null
 function getSaveSlots()
 {
     createSaveSlots();
-    var slots = []
+    if (save_slots == null)
+    {
+    save_slots = []
     for (let i=0; i<16; i++)
     {
-        slots.push(JSON.parse(localStorage.getItem("saveSlot" + i)));
+        save_slots.push(JSON.parse(localStorage.getItem("saveSlot" + i)));
     }
-    return slots;
+    }
+    return save_slots;
 }
 function saveProgress(slot)
 {
     var saveContent = {
         "scriptId": current_script_id,
-        "instruction": current_instruction,
+        "instruction": 0,
         "date": new Date().toString()
     }
    
     localStorage.setItem("saveSlot" + slot,JSON.stringify(saveContent));
+    save_slots[slot] = saveContent;
     console.log("Saved progress!");
     //var jsonContent = JSON.stringify(saveContent)
 }
@@ -50,7 +55,7 @@ function createNewSave(slot)
     var saveContent = {
         "scriptId": "test",
         "instruction": 0,
-        "date": new Date().now
+        "date": new Date().toString()
     }
     localStorage.setItem("saveSlot" + slot,JSON.stringify(saveContent));
     console.log("Created new save at slot " + slot)
