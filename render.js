@@ -37,6 +37,7 @@ function render_background(bg)
 var lastText = "";
 var progress = 0;
 var word_speed = 0.15;
+
 function render_text_box(title, text, bust)
 {
     var textboxY = canvas.height - textBoxHeight
@@ -65,7 +66,7 @@ function render_text_box(title, text, bust)
 
     ctx.font = fontSizeMedium+"px serif";
 
-
+    ctx.textAlign = "start";
     var nameSize = ctx.measureText(title)
     ctx.fillRect(centerx - textBoxWidth/2, textboxY - (textBoxHeight/2) - fontSizeMedium, nameSize.width, fontSizeMedium)
     ctx.fillStyle = "white";
@@ -95,6 +96,25 @@ function render_text_box(title, text, bust)
     ctx.fillText(newText, centerx - textBoxWidth/2, textboxY - (textBoxHeight/2) + fontSizeSmall);
 }
 
+function render_choices(choices)
+{
+    console.log("Rendering choices!")
+    var x = centerx + textBoxWidth/2;
+    var y = canvas.height - textBoxHeight;
+    choiceKeys = Object.keys(current_choices);
+    for (let i =0; i < choiceKeys.length; i++)
+    {
+
+        var title = choices[choiceKeys[i]]
+        ctx.font = fontSizeSmall+"px serif";
+        var choiceSize = ctx.measureText(title)
+        ctx.textAlign = "right";
+        ctx.fillStyle = "magenta";
+        ctx.fillRect(x - choiceSize.width, y - ((i*fontSizeSmall) + fontSizeSmall), choiceSize.width, fontSizeSmall);
+        ctx.fillStyle = (selected_choice == i) ? "white" : "black";
+        ctx.fillText(title, x, y - (i*fontSizeSmall));
+    }
+}
 function render_tick()
 {
     context.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
