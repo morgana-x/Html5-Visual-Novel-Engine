@@ -58,6 +58,7 @@ function createNewSave(slot)
         "date": new Date().toString()
     }
     localStorage.setItem("saveSlot" + slot,JSON.stringify(saveContent));
+    save_slots[slot] = saveContent;
     console.log("Created new save at slot " + slot)
 }
 function loadProgress(slot)
@@ -162,7 +163,6 @@ function saveload_input_select()
             stop_sound();
             createNewSave(selected_save_slot);
             loadProgress(selected_save_slot);
-            saveProgress(selected_save_slot);
         }
         return true;
     }
