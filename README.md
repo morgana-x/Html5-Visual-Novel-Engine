@@ -9,10 +9,10 @@ View a demo here https://morgana-x.github.io/Html5-Visual-Novel-Engine/
 
 # Controls (Temporary)
 - Confirm: Space / Enter / Mouse1
-- Scroll Up: W / Up Arrow / Mouse2 / mousewheel up
+- Scroll Up: W / Up Arrow / mousewheel up
 - Scroll Down: S / Down Arrow / mousewheel down
 - Pause Menu: Escape
-- Back / Return: Escape
+- Back / Return: Escape /  Mouse2 
 # Credit
 
 Used https://sutemo.itch.io/female-character for the bustups in the demo
