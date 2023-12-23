@@ -36,7 +36,8 @@ function saveProgress(slot)
     var saveContent = {
         "scriptId": current_script_id,
         "instruction": 0,
-        "date": new Date().toString()
+        "date": new Date().toString(),
+        "scriptVariables" : script_variables
     }
    
     localStorage.setItem("saveSlot" + slot,JSON.stringify(saveContent));
@@ -55,7 +56,8 @@ function createNewSave(slot)
     var saveContent = {
         "scriptId": "test",
         "instruction": 0,
-        "date": new Date().toString()
+        "date": new Date().toString(),
+        "scriptVariables" : {}
     }
     localStorage.setItem("saveSlot" + slot,JSON.stringify(saveContent));
     save_slots[slot] = saveContent;
@@ -76,6 +78,14 @@ function loadProgress(slot)
 
     //var instruction = 0;//(saveData.instruction != null) ? saveData.instruction : 0;
     pause_menu_active = false;
+    if (saveData["scriptVariables"] != null)
+    {
+        script_variables = saveData["scriptVariables"];
+    }
+    else
+    {
+        script_variables = {};
+    }
     load_script(saveData.scriptId);
    // current_instruction = instruction;
 }

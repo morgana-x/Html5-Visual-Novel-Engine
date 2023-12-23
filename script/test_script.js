@@ -7,7 +7,8 @@ wait_input();
 set_bg("kfc_bg.jpg");
 set_character(0);
 set_emote("smile");
-set_text("Hello there!");
+set_variable("testVar", "HEllo world");
+set_text("Hello there! [var testVar]");
 play_sound("voice/0_enter.wav");
 wait_input();
 set_text("Welcome to Kawaii Fried Chicken!");
@@ -31,7 +32,7 @@ scripts["test2"] = `
 set_bg("kfc_bg.jpg");
 set_character(0);
 set_emote("smile");
-set_text("Welll");
+set_text("Welll [var testVar]");
 wait_input();
 set_text("It can do this");
 print("test");

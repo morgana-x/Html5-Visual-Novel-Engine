@@ -10,6 +10,7 @@ var waiting_for_choice = false;
 current_choices = {};
 selected_choice = 0;
 current_script_id = null;
+script_variables = {}
 function loadScript(txt)
 {
     script_clear();
@@ -48,8 +49,30 @@ var set_character = function(id)
 }
 var set_text = function(txt)
 {
+    var scriptVarKeys = Object.keys(script_variables)
+    console.log(scriptVarKeys)
+    console.log(script_variables)
+    for (i=0; i < scriptVarKeys.length; i++)
+    {
+        var key = scriptVarKeys[i]
+        console.log("[var " + key  +"]")
+        console.log(script_variables[key])
+        txt = txt.replace("[var " + key  +"]", script_variables[key]) // allow variables in text
+    }
+    console.log(txt)
     current_dialouge.text = txt;
     stop_sound();
+}
+var set_variable = function(varId, value)
+{
+    script_variables[varId] = value;
+    console.log(script_variables)
+    console.log(varId)
+    console.log(value)
+}
+var get_variable = function(varId)
+{
+    return script_variables[varId];
 }
 var set_emote = function(emote)
 {
@@ -100,6 +123,7 @@ var safe_functions = {
     "set_character": set_character,
     "set_text": set_text,
     "set_emote": set_emote,
+    "set_variable" : set_variable,
     "wait_input": wait_input,
     "print": script_print,
     "load_script": load_script,
