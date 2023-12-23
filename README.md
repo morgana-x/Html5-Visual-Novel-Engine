@@ -27,11 +27,13 @@ test
 set_character(-1);
 clear_dialouge();
 set_bg("kfc_bg_2.jpg");
+set_text("I should enter this KFC...");
 wait_input();
 set_bg("kfc_bg.jpg");
 set_character(0);
 set_emote("smile");
-set_text("Hello there!");
+set_variable("testVar", "HEllo world");
+set_text("Hello there! [var testVar]");
 play_sound("voice/0_enter.wav");
 wait_input();
 set_text("Welcome to Kawaii Fried Chicken!");
@@ -52,11 +54,10 @@ load_script("test2");
 ```
 test2
 ```py
-clear_dialouge();
 set_bg("kfc_bg.jpg");
 set_character(0);
 set_emote("smile");
-set_text("Welll");
+set_text("Welll [var testVar]");
 wait_input();
 set_text("It can do this");
 print("test");
@@ -70,7 +71,6 @@ choice("First Choice","test3","Goto start of script",0,"Goto middle of script",1
 ```
 test3
 ```py
-clear_dialouge();
 set_bg("kfc_bg_2.jpg");
 set_character(0);
 set_emote("smile");
