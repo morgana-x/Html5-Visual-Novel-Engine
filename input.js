@@ -53,7 +53,7 @@ function input_down()
 function on_right_click(event)
 {
     event.preventDefault();
-    input_up();
+    on_back();
     return false;
 }
 function on_back()
