@@ -23,6 +23,7 @@ function updateSize()
 
     fontSizeMedium = (32*(canvas.width/1280));
     fontSizeSmall = (24*(canvas.width/1280));
+    fontSizeLarge = (40*(canvas.width/1280));
 
     textBoxWidth = canvas.width / 1;
     textBoxHeight = canvas.height / 8;
