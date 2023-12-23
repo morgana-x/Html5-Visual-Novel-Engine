@@ -4,7 +4,7 @@ A bad personal visual novel framework
 
 View a demo here https://morgana-x.github.io/Html5-Visual-Novel-Engine/
 # Features
-- limited custom scripting language (See example scripts below)
+- limited custom scripting language (See example scripts below), also see the [wiki](https://github.com/morgana-x/Html5-Visual-Novel-Engine/wiki/Script-Functions)
 - that's about it!
 
 # Controls (Temporary)
