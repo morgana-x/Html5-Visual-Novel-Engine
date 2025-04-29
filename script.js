@@ -10,19 +10,13 @@ var waiting_for_choice = false;
 current_choices = {};
 selected_choice = 0;
 current_script_id = null;
-script_variables = {};
-script_labels = {};
+script_variables = {}
 function loadScript(txt)
 {
     script_clear();
-	current_instructions = txt.replace("{", "").replace("}", "").replace(" ", "").replace("\t", "").split(";");
-	// current_instructions = txt.split(";");
+    current_instructions = txt.split(";");
     current_instruction = 0;
     scene = 1 // set scene to visual novel type (Exit main menu etc)
-	for (i = 0; i < current_instructions.length; i++)
-	{
-		preReadInstruction(i);
-	}
 }
 
 function load_script(id)
@@ -41,17 +35,6 @@ var clear_dialouge = function()
 {
     current_dialouge.reset();
 }
-var set_label = function(id)
-{
-	script_labels[id] = current_instruction;
-}
-var goto_label = function(id)
-{
-	if (script_labels[id])
-	{
-		current_instruction = script_labels[id];
-	}
-}
 var set_character = function(id)
 {
     if (id == -1)
@@ -61,8 +44,8 @@ var set_character = function(id)
         return;
     }
     current_speaker = get_character(id);
-    current_dialouge.name = current_speaker.name;
-    current_dialouge.bust = current_speaker.bust;
+    current_dialouge.name = current_speaker.name
+    current_dialouge.bust = current_speaker.bust
 }
 var set_text = function(txt)
 {
@@ -90,17 +73,6 @@ var set_variable = function(varId, value)
 var get_variable = function(varId)
 {
     return script_variables[varId];
-}
-var set_flag = function(varId, value)
-{
-	script_variables["reserv_flag_" + varId] = value;
-}
-var check_flag = function(varId, value)
-{
-	if (script_variables["reserv_flag_" + varId] != value)
-	{
-		current_instruction += 1;
-	}
 }
 var set_emote = function(emote)
 {
@@ -163,10 +135,6 @@ var safe_functions = {
     "set_bg": set_bg,
     "goto": script_goto,
     "choice": choice,
-	"set_flag": set_flag,
-	"check_flag": check_flag,
-	"set_label": set_label,
-	"goto_label": goto_label
 }
 
 function toVariable(v)
@@ -198,11 +166,7 @@ function readInstruction(i)
     var argIndex = i.indexOf("(",0)
     var funcName = i.substring(1, argIndex);
 
-    var rawargs = i.substring(argIndex, i.length).replace("(", "").replace(")","").split(",");
-    var args = []
-    rawargs.forEach(a => {
-        args.push(toVariable(a));
-    });
+    var args = readArgs(i);
 
 
 
@@ -216,17 +180,76 @@ function readInstruction(i)
         safe_functions[funcName].apply(this);
     }
 }
+function readArgs(ins) // i for instruction
+{
+    var argIndex = ins.indexOf("(",0)
+    var instruction = ins.substring(argIndex+1, ins.length-1);
+
+    var i = 0;
+    var c = "";
+    var str = "";
+    var rawargs = [];
+    while(c != "\n" && i < instruction.length)
+    {
+        c = instruction[i];
+        i++;
+        console.log(c);
+        
+        if (c == "\"")
+        {
+            console.log("Adding string");
+            c = instruction[i];
+            while (c != "\"" && i < instruction.length)
+            {
+                c = instruction[i];
+                if (c == "\\")
+                {
+                    if (c == "n")
+                        str += "\n";
+                    else if (c == "\\")
+                        str += "\\";
+                    else
+                        str += "\\" + c;
+                    continue;
+                }
+                str += c;
+                i++;
+            }
+            str = "\"" + str;
+            rawargs.push(str);
+            console.log("Adding string" + str);
+            str = "";
+            continue;
+        }
+
+        str = str + c;
+        if (c == "," || i-1 == instruction.length-1)
+        {   
+            if (c == ",")
+                str = str.substring(0, str.length-1);
+            console.log("Adding arg: " + str);
+            if (str != "")
+                rawargs.push(str);
+            str = "";
+            continue;
+        }
+        console.log(str);
+    }
+   
+    var args = []
+    rawargs.forEach(a => {
+        console.log(a);
+        args.push(toVariable(a));
+    });
+    return args;
+}
 
 function preReadInstruction(i)
 {
     var argIndex = i.indexOf("(",0)
     var funcName = i.substring(1, argIndex);
 
-    var rawargs = i.substring(argIndex, i.length).replace("(", "").replace(")","").split(",");
-    var args = []
-    rawargs.forEach(a => {
-        args.push(toVariable(a));
-    });
+    var args = readArgs(i);
 
 
 
@@ -245,13 +268,6 @@ function preReadInstruction(i)
             getImage("image/background/" + args[0]);
         }
     }
-	if (funcName == "set_label")
-	{
-		if (args[0])
-        {
-			script_labels[args[0]] = i;
-        }
-	}
     if (funcName == "set_character")
     {
         if (args[0] == -1)
@@ -312,7 +328,6 @@ function script_clear()
     waiting_for_input = false;
     waiting_for_choice = false;
     current_choices = {};
-	script_labels = {};
     
 }
 function script_tick()

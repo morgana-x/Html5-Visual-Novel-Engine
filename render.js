@@ -26,7 +26,7 @@ function updateSize()
     fontSizeLarge = (40*(canvas.width/1280));
 
     textBoxWidth = canvas.width / 1;
-    textBoxHeight = canvas.height / 8;
+    textBoxHeight = canvas.height / 5;
 }
 window.addEventListener("resize", updateSize)
 
@@ -51,11 +51,8 @@ function render_text_box(title, text, bust)
         
 
         //console.log(textboxY)
-        ctx.drawImage(img, centerx - (imgWidth/2), textboxY - imgHeight - (textBoxHeight/2), imgWidth,imgHeight);
+        ctx.drawImage(img, centerx - (imgWidth/2), canvas.height-imgHeight, imgWidth,imgHeight);
     }
-
-   
-        
 
     var textBoxX = 0 //centerx - textBoxWidth/2
 
@@ -98,7 +95,19 @@ function render_text_box(title, text, bust)
 
     ctx.fillStyle = "white";
     ctx.font = fontSizeSmall+"px serif";
-    ctx.fillText(newText, textBoxX + 10, textboxY - (textBoxHeight/2) + fontSizeSmall);
+    var y = 0;
+    var x = 0;
+    for (var i =0; i < newText.length; i ++)
+    {
+        if (newText[i] == "\n")
+        {
+            y += 1;
+            x = 0;
+            continue;
+        }
+        ctx.fillText(newText[i], textBoxX + 10 + x, textboxY - (textBoxHeight/2) + fontSizeSmall + (fontSizeSmall*y));
+        x += ctx.measureText(newText[i]).width;
+    }
 }
 function render_mainmenu(selected_button, options)
 {
