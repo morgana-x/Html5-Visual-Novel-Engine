@@ -187,7 +187,12 @@ function toVariable(v)
 {
     if (v.includes("\""))
     {
-        return v.replace('"',"").replace("'", "").replace('"', "");
+        if (v.startsWith('"'))
+            v = v.substring(1, v.length-1);
+         if (v.endsWith('"'))
+            v = v.substring(0, v.length-2);
+
+        return v;
     }
     else
     {
@@ -245,23 +250,29 @@ function readArgs(ins) // i for instruction
         {
             console.log("Adding string");
             c = instruction[i];
-            while (c != "\"" && i < instruction.length)
+            while (i < instruction.length)
             {
                 c = instruction[i];
-                if (c == "\\")
+                if (c == '\\')
                 {
+                    i++;
+                    c = instruction[i];
                     if (c == "n")
                         str += "\n";
+                    else if (c == '"')
+                        str += "\"";
                     else if (c == "\\")
                         str += "\\";
                     else
                         str += "\\" + c;
+                    i++;
                     continue;
                 }
+                if (c == "\"") break;
                 str += c;
                 i++;
             }
-            str = "\"" + str;
+            str = "\"" + str + "\"";
             rawargs.push(str);
             console.log("Adding string" + str);
             str = "";
