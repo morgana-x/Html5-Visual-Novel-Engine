@@ -7,10 +7,12 @@ var current_instructions = null;
 current_instruction = 0;
 var waiting_for_input = false;
 var waiting_for_choice = false;
+
 current_choices = {};
 selected_choice = 0;
 current_script_id = null;
 script_variables = {}
+
 function loadScript(txt)
 {
     script_clear();
@@ -74,6 +76,17 @@ var get_variable = function(varId)
 {
     return script_variables[varId];
 }
+
+var add_variable = function(varId, value)
+{
+    var variable = get_variable(varId);
+    if (variable == null) 
+    {
+        set_variable(varId, value);
+        return;
+    }
+    set_variable(varId, variable + value);
+}
 var set_emote = function(emote)
 {
     current_dialouge.emote = emote;
@@ -119,11 +132,44 @@ var script_goto = function(line)
     current_instruction = line;
 }
 
+script_var_check_status = false;
+
+
+function script_var_check_internal(v, c, t)
+{
+    var variable = get_variable(v);
+    if (variable == null) return false;
+
+    if (t == 0 && variable == c) return true;
+    if (t == 1 && variable < c) return true;
+    if (t == 2 && variable <= c) return true;
+    if (t == 3 && variable > c) return true;
+    if (t == 4 && variable >= c) return true;
+}
+var script_var_check = function(v, c, t)
+{
+    script_var_check_status = script_var_check_internal(v,c,t);
+}
+
+var script_var_if = function()
+{
+    if (!script_var_check_status)
+    {
+        current_instruction = current_instruction + 1;
+        return;
+    }
+
+    script_var_check_status = false;
+}
+
 var safe_functions = {
     "set_character": set_character,
     "set_text": set_text,
     "set_emote": set_emote,
     "set_variable" : set_variable,
+    "add_variable" : add_variable,
+    "check_variable" : script_var_check,
+    "if" : script_var_if,
     "wait_input": wait_input,
     "print": script_print,
     "load_script": load_script,
