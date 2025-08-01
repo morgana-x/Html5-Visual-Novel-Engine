@@ -45,27 +45,34 @@ var lastSound = null;
 current_song = null;
 function play_sound(filePath, suppressLastSound=true)
 {
-    if (suppressLastSound)
+    if (true && lastSound != null && !(lastSound.finished || lastSound.paused))
     {
-        stop_sound();
+        lastSound.onpause = (event)=>{
+            console.log("paused sound!");
+            lastSound = null;
+            play_sound(filePath, false);
+        };
+        lastSound.pause();
+        return;
+        //stop_sound();
     }
     lastSound = get_sound("sound/" + filePath)
+    lastSound.currentTime = 0;
+    lastSound.load();
     lastSound.play();
+    console.log("Playing sound " + filePath)
 }
 function play_music(filePath)
 {
-    stop_music();
     current_song = get_song("sound/music/" + filePath)
     current_song.play();
 }
 function stop_sound()
 {
-    if  (lastSound == null)
-    {
-        return;
-    }
+    if  (lastSound == null) return;
+    if (lastSound.finished || lastSound.paused) return;
     lastSound.pause();
-    lastSound.currentTime = 0;
+   // lastSound.currentTime = 999999999999;
 }
 function stop_music()
 {

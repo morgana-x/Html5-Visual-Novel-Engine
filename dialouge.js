@@ -15,7 +15,7 @@ class Dialouge {
     {
         this.name = null;
         this.text = null;
-        this.emote = "normal";
+        this.emote = null;
         this.bust = null;
         this.bg = null;
     }

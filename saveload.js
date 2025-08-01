@@ -33,9 +33,15 @@ function getSaveSlots()
 }
 function saveProgress(slot)
 {
+    var slots = getSaveSlots()
+    var saveData = slots[slot];
+    if (saveData.scriptId != null && !confirm("Do you wish to override this save?")) // TODO: if save data already there, warn user about it and ask to override
+    {
+        return false;
+    }
     var saveContent = {
-        "scriptId": current_script_id,
-        "instruction": 0,
+        "scriptId": get_script_id(),
+        "instruction": current_instruction,
         "date": new Date().toString(),
         "scriptVariables" : script_variables
     }
@@ -43,15 +49,17 @@ function saveProgress(slot)
     localStorage.setItem("saveSlot" + slot,JSON.stringify(saveContent));
     save_slots[slot] = saveContent;
     console.log("Saved progress!");
+    console.log(JSON.stringify(saveContent));
     //var jsonContent = JSON.stringify(saveContent)
+    return true;
 }
 function createNewSave(slot)
 {
     var slots = getSaveSlots()
     var saveData = slots[slot];
-    if (saveData.scriptId != null) // TODO: if save data already there, warn user about it and ask to override
+    if (saveData.scriptId != null && !confirm("Do you wish to override this save?")) // TODO: if save data already there, warn user about it and ask to override
     {
-
+        return false;
     }
     var saveContent = {
         "scriptId": "test",
@@ -59,9 +67,12 @@ function createNewSave(slot)
         "date": new Date().toString(),
         "scriptVariables" : {}
     }
+   
     localStorage.setItem("saveSlot" + slot,JSON.stringify(saveContent));
     save_slots[slot] = saveContent;
-    console.log("Created new save at slot " + slot)
+
+    load_script(saveContent.scriptId);
+    return true;
 }
 function loadProgress(slot)
 {
@@ -73,7 +84,7 @@ function loadProgress(slot)
         alert("No save data in slot!");
         //createNewSave(slot);
         //loadProgress(slot);
-        return;
+        return false;
     }
 
     //var instruction = 0;//(saveData.instruction != null) ? saveData.instruction : 0;
@@ -86,8 +97,8 @@ function loadProgress(slot)
     {
         script_variables = {};
     }
-    load_script(saveData.scriptId);
-   // current_instruction = instruction;
+    load_script(saveData.scriptId, saveData.instruction);
+    return true;
 }
 selected_save_slot = 0;
 selecting_saveslot = false;
@@ -159,21 +170,21 @@ function saveload_input_select()
         selecting_saveslot = false;
         if (selecting_saveslot_save)
         {
-            saveProgress(selected_save_slot);
+            return saveProgress(selected_save_slot);
         }
         else if (selecting_saveslot_load)
         {
             stop_music();
             stop_sound();
-            loadProgress(selected_save_slot);
+            return loadProgress(selected_save_slot);
         }
         else if (selecting_saveslot_newgame)
         {
+            if (!createNewSave(selected_save_slot)) return false;
             stop_music();
             stop_sound();
-            createNewSave(selected_save_slot);
-            loadProgress(selected_save_slot);
+            return loadProgress(selected_save_slot);
         }
-        return true;
+        return false;
     }
 }

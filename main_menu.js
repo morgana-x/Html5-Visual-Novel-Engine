@@ -18,7 +18,7 @@ var options = {
 
 function tick_mainmenu()
 {
-    render_background("image/background/kfc_bg.jpg");
+    render_background("image/background/stansdoor.png");
     render_mainmenu(selected_button,options);
 }
 
@@ -55,7 +55,7 @@ function main_menu_input_down()
     }
     if (interactedWithDocument == false)
     {
-        play_music("clairdelune.mp3");
+        play_music("doorofsteiner.mp3");
         interactedWithDocument = true;
     }
 }
@@ -73,7 +73,7 @@ function main_menu_input_up()
     }
     if (interactedWithDocument == false)
     {
-        play_music("clairdelune.mp3");
+        play_music("doorofsteiner.mp3");
         interactedWithDocument = true;
     }
 }
@@ -85,7 +85,7 @@ function main_menu_input_select()
     }
     if (interactedWithDocument == false)
     {
-        play_music("clairdelune.mp3");
+        play_music("doorofsteiner.mp3");
         interactedWithDocument = true;
     }
     options[Object.keys(options)[selected_button]]();

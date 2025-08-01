@@ -13,20 +13,32 @@ selected_choice = 0;
 current_script_id = null;
 script_variables = {}
 
-function loadScript(txt)
+var script_jump_table = {}
+
+function loadScript(txt, instruction=0)
 {
     script_clear();
     current_instructions = txt.split(";");
-    current_instruction = 0;
+    current_instruction = instruction;
     scene = 1 // set scene to visual novel type (Exit main menu etc)
+    preReadLabels();
 }
 
-function load_script(id)
+function get_script_id()
+{
+    console.log("Current script id is " + current_script_id);
+    return current_script_id;
+}
+
+function load_script(id, instr=0)
 {
     if (scripts[id])
     {
-        loadScript(scripts[id])
+        console.log("Set current script to " + id);
         current_script_id = id;
+        loadScript(scripts[id], instr)
+        current_script_id = id;
+        console.log("Set current script to " + id);
     }
     else
     {
@@ -43,11 +55,13 @@ var set_character = function(id)
     {
         current_speaker = null;
         current_dialouge.bust = null;
+        current_dialouge.name = null;
         return;
     }
     current_speaker = get_character(id);
     current_dialouge.name = current_speaker.name
-    current_dialouge.bust = current_speaker.bust
+    /*if (current_speaker.bust != null)
+        current_dialouge.bust = current_speaker.bust*/
 }
 var set_text = function(txt)
 {
@@ -63,7 +77,7 @@ var set_text = function(txt)
     }
     console.log(txt)
     current_dialouge.text = txt;
-    stop_sound();
+    //stop_sound();
 }
 var set_variable = function(varId, value)
 {
@@ -89,8 +103,12 @@ var add_variable = function(varId, value)
 }
 var set_emote = function(emote)
 {
+    if (emote == -1) emote = null;
     current_dialouge.emote = emote;
-    if (current_dialouge.bust)
+    if (current_speaker != null && current_speaker.bust != null)
+        current_dialouge.bust = current_speaker.bust;
+
+    if (current_dialouge != null && current_dialouge.bust)
     {
         getImage(current_dialouge.bust + "/" + emote + ".png"); // preload
     }
@@ -117,18 +135,28 @@ var choice = function(...choices) // WIP
     waiting_for_choice = true;
     for (let i=2; i <choices.length+2; i+=2)
     {
-        var destination = choices[i-2]
-        var text = choices[i-1]
+        var destination = choices[i-2].trim();
+        var text = choices[i-1].trim();
         current_choices[text] = destination;
     }
 }
 
-var script_goto = function(line)
+var script_goto = function(label)
 {
-    if (line >= current_instructions.length-1)
+    console.log("Jumping to label " + label);
+    if (label in script_jump_table)
     {
+        console.log("found in jump table");
+        current_instruction = script_jump_table[label];
+        console.log("Jumped to " + script_jump_table[label]);
         return;
     }
+
+    var line = label;
+    if (!isNumeric(line)) return;
+    if (line >= current_instructions.length-1) return;
+    if (line < 0) return;
+    console.log("Jumped to line " + label);
     current_instruction = line;
 }
 
@@ -180,6 +208,7 @@ var safe_functions = {
     "clear_dialouge": clear_dialouge,
     "set_bg": set_bg,
     "goto": script_goto,
+    "label": function(){},
     "choice": choice,
 }
 
@@ -191,7 +220,7 @@ function toVariable(v)
             v = v.substring(1, v.length-1);
          if (v.endsWith('"'))
             v = v.substring(0, v.length-2);
-
+        console.log("[SCRIPT] Parsing \"" + v + "\" as a string!" )
         return v;
     }
     else
@@ -214,6 +243,7 @@ function toVariable(v)
 }
 function readInstruction(i)
 {
+    if (i == null) {console.log("Error null instruction at " + current_instruction); return;}
     var argIndex = i.indexOf("(",0)
     var funcName = i.substring(1, argIndex);
 
@@ -248,7 +278,7 @@ function readArgs(ins) // i for instruction
         
         if (c == "\"")
         {
-            console.log("Adding string");
+           // console.log("Adding string");
             c = instruction[i];
             while (i < instruction.length)
             {
@@ -268,13 +298,13 @@ function readArgs(ins) // i for instruction
                     i++;
                     continue;
                 }
+                i++;
                 if (c == "\"") break;
                 str += c;
-                i++;
             }
             str = "\"" + str + "\"";
             rawargs.push(str);
-            console.log("Adding string" + str);
+          //  console.log("Adding string" + str);
             str = "";
             continue;
         }
@@ -301,7 +331,53 @@ function readArgs(ins) // i for instruction
     return args;
 }
 
-function preReadInstruction(i)
+function script_label(i, index=current_instruction)
+{
+    script_jump_table[i] = index;
+}
+
+
+var latestBg = null;
+function preReadLabels()
+{
+
+    var i=0;
+    while (i <current_instructions.length)
+    {
+        preReadLabel(current_instructions[i], i);
+        i++;
+    }
+    latestBg = null;
+    i=0;
+    while (i <current_instructions.length && i <= current_instruction)
+    {
+        preReadLabel(current_instructions[i], i);
+        i++;
+    }
+
+    if (latestBg != null)
+        set_bg(latestBg);
+}
+function preReadLabel(i, index)
+{
+    var argIndex = i.indexOf("(",0)
+    var funcName = i.substring(1, argIndex).trim();
+    if (funcName == "label")
+    {
+        script_label(readArgs(i)[0], index);
+        return;
+    }
+    if (funcName == "set_bg")
+    {
+        var args = readArgs(i);
+        if (!args[0]) return
+        latestBg = args[0];
+        console.log("Latest bg is " + args[0]);
+        return;
+    }
+}
+
+function preReadInstruction(i, index)
 {
     var argIndex = i.indexOf("(",0)
     var funcName = i.substring(1, argIndex);
@@ -311,9 +387,14 @@ function preReadInstruction(i)
 
 
     funcName = funcName.trim();
+
+    if (funcName == "label")
+    {
+        script_label(args[0], index);
+    }
     if (funcName == "set_emote")
     {
-        if (current_dialouge.bust)
+        if ( current_dialouge != null && current_dialouge.bust && args[0] != -1)
         {
             getImage(current_dialouge.bust + "/" + args[0] + ".png"); // preload
         }
@@ -331,14 +412,9 @@ function preReadInstruction(i)
         {
             return;
         }
-        if (current_dialouge.emote == null)
-        {
-            return;
-        }
         char = get_character(args[0]);
-        var bust = char.bust;
-        getImage(bust + "/" + current_dialouge.emote + ".png"); // preload
-
+        if (current_dialouge.emote != null)
+            getImage(char.bust + "/" + current_dialouge.emote + ".png"); // preload
     }
 }
 
@@ -374,7 +450,7 @@ function on_select_choice()
     }
     else
     {
-        load_script(result);
+        script_goto(result);
     }
 }
 function script_clear()
@@ -405,7 +481,7 @@ function script_tick()
     readInstruction(current_instructions[current_instruction]);
     if (current_instruction < current_instructions.length-2)
     {
-        preReadInstruction(current_instructions[current_instruction+1]);
+        preReadInstruction(current_instructions[current_instruction+1], current_instruction+1);
     }
     current_instruction = current_instruction + 1;
 }

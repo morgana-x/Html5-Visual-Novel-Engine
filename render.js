@@ -25,7 +25,7 @@ function updateSize()
     fontSizeSmall = (24*(canvas.width/1280));
     fontSizeLarge = (40*(canvas.width/1280));
 
-    textBoxWidth = canvas.width / 1;
+    textBoxWidth = canvas.width / 1.05;
     textBoxHeight = canvas.height / 5;
 }
 window.addEventListener("resize", updateSize)
@@ -54,9 +54,9 @@ function render_text_box(title, text, bust)
         ctx.drawImage(img, centerx - (imgWidth/2), canvas.height-imgHeight, imgWidth,imgHeight);
     }
 
-    var textBoxX = 0 //centerx - textBoxWidth/2
+    var textBoxX = centerx - textBoxWidth/2
 
-    ctx.fillStyle = 'rgba(' + '173, 91, 245, 0.7' + ')' //"pink";
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)' //"pink";
     ctx.fillRect(textBoxX, textboxY - textBoxHeight/2, textBoxWidth, textBoxHeight)
 
 
@@ -67,7 +67,7 @@ function render_text_box(title, text, bust)
     if (title != null)
     {
         var nameSize = ctx.measureText(title)
-        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.6)'
         ctx.fillRect(textBoxX, textboxY - (textBoxHeight/2) - (fontSizeMedium*1.2), nameSize.width * 1.2, fontSizeMedium * 1.2)
         ctx.fillStyle = "white";
         ctx.fillText(title, textBoxX + 10, textboxY  - (textBoxHeight /2) - ((fontSizeMedium)/2/2) );
@@ -105,7 +105,7 @@ function render_text_box(title, text, bust)
             x = 0;
             continue;
         }
-        ctx.fillText(newText[i], textBoxX + 10 + x, textboxY - (textBoxHeight/2) + fontSizeSmall + (fontSizeSmall*y));
+        ctx.fillText(newText[i], textBoxX + 40 + x, textboxY - (textBoxHeight/2) + fontSizeSmall + 20 + (fontSizeSmall*y));
         x += ctx.measureText(newText[i]).width;
     }
 }
@@ -114,16 +114,16 @@ function render_mainmenu(selected_button, options)
     var x = centerx; //+ textBoxWidth/2;
     var fontSizeLarge = (50*(canvas.width/1280));
     var optionskeys = Object.keys(options)
-    var y = centery + (optionskeys.length*fontSizeLarge)/2 ;
+    var y = centery + (optionskeys.length*fontSizeLarge) * 1.5 ;
     for (let i =0; i< optionskeys.length;i++)
     {
         var title = optionskeys[i] //options[optionskeys[i]]
         ctx.font = fontSizeLarge+"px serif";
-        var choiceSize = ctx.measureText(title)
+        var choiceSize = ctx.measureText(optionskeys[2])
         ctx.textAlign = "center";
-        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
-        ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge);
-        ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
+       // ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+      //  ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge);
+       // ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
         ctx.fillStyle = (selected_button == i) ? "white" : "black";
         ctx.fillText(title, x, y - (i*fontSizeLarge));
     }
@@ -141,9 +141,8 @@ function render_pausemenu(selected_button, pauseoptions)
         ctx.font = fontSizeLarge+"px serif";
         var choiceSize = ctx.measureText(title)
         ctx.textAlign = "center";
-        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillStyle = 'rgba(212, 164, 230, 0.7)'
         ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge);
-        ctx.fillRect(x - choiceSize.width/2, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
         ctx.fillStyle = (selected_button == i) ? "white" : "black";
         ctx.fillText(title, x, y - (i*fontSizeLarge));
     }
@@ -161,9 +160,8 @@ function render_choices(choices)
         ctx.font = fontSizeLarge+"px serif";
         var choiceSize = ctx.measureText(title)
         ctx.textAlign = "right";
-        ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
+        ctx.fillStyle = 'rgba(233, 200, 244, 0.7)'
         ctx.fillRect(x - choiceSize.width - 10, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge);
-        ctx.fillRect(x - choiceSize.width - 10, y - ((i*fontSizeLarge) + fontSizeLarge), choiceSize.width + 10, fontSizeLarge / 1.5);
         ctx.fillStyle = (selected_choice == i) ? "white" : "black";
         ctx.fillText(title, x-10, y - (i*fontSizeLarge));
     }
@@ -175,7 +173,11 @@ function render_saveslots()
     var x = centerx
     var y = centery + ( (16*fontSizeSmall * 3) - fontSizeSmall*3 + fontSizeSmall/3)/2;
     var saveSlots = getSaveSlots();
-
+    
+    var choiceSize = {width: canvas.width/3}//ctx.measureText(text)
+    var bgheight = saveSlots.length * fontSizeSmall*3.5
+    ctx.fillRect(x - choiceSize.width/2 ,  y - bgheight + fontSizeSmall, choiceSize.width, bgheight);
+slotY += fontSizeSmall*3.5/2 + (fontSizeSmall/2)
     for (let i =0; i < saveSlots.length; i++)
     {
 
@@ -190,12 +192,12 @@ function render_saveslots()
         }
 
         ctx.font = "bold " + fontSizeSmall+"px serif";
-        var choiceSize = {width: canvas.width}//ctx.measureText(text)
         ctx.textAlign = "center";
         ctx.fillStyle = 'rgba(' + '219, 127, 250, 0.7' + ')'
         var slotY = y - (i*fontSizeSmall * 3) - fontSizeSmall*i*0.5
+        ctx.fillStyle = (selected_save_slot == i) ? "black" : "white";
         ctx.fillRect(x - choiceSize.width/2 ,  slotY, choiceSize.width, fontSizeSmall*3.5);
-        slotY += fontSizeSmall*3.5/2 + (fontSizeSmall/2)
+slotY += fontSizeSmall*3.5/2 + (fontSizeSmall/2)
         ctx.fillStyle = (selected_save_slot == i) ? "white" : "black";
         ctx.fillText(title, x, slotY- fontSizeSmall);
         ctx.font = fontSizeSmall+"px serif";
@@ -218,7 +220,7 @@ function render_tick()
         {
             render_background(current_dialouge.bg)
         }
-        if (current_dialouge.bust)
+        if (current_dialouge.bust != null && current_dialouge.emote != null)
         {
             render_text_box(current_dialouge.name, current_dialouge.text, current_dialouge.bust + "/" + current_dialouge.emote + ".png")
         }
